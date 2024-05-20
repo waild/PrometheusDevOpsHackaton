@@ -37,15 +37,20 @@ Slack-bot повинен отримувати та виконувати три �
 ![Image](Slack-Bot-v1.png)
 
 ## Components
+- **SlackBOT**: As an entry point to interact with devs.
+- **The App**: 3 tier application.
+ 
+## Technologies Used
 
+- **Slack**: Team communication platform
 - **GCP**: As cloud provider
 - **GIT**: As version control system.
-- **GIT Actions**: To implement testing and CI.
+- **GIT Actions**: For testing and CI.
 - **Terraform**: As IaC provisioning tool
 - **GKE**: As Kubernetes service.
 - **K8S**: As container orchestration system.
+- **Helm charts**: To deploy an application to a Kubernetes cluster.
 - **FluxCD**: To delivery solutions for Kubernetes.
-- **SlackBOT**: As entry point to interact with users.
 
 ## Conclusion
-The Slack bot for Preview Environment is designed to provide a efficient and real-time solution to automate infrastructure tasks.
+The Slack bot for Preview Environment is designed to provide an efficient and real-time solution to automate infrastructure tasks.
