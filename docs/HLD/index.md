@@ -1,5 +1,11 @@
 # High-Level Solution Design (HLD)
-   
+
+## Overview
+
+This document outlines the high-level design of the Slack bot for automatization infrastructure tasks.
+
+## System Flow
+
 Пропонується наступна схема реализаціі.
 У існуючому кластері розгортається FluxCD налаштований на конкретний Google storage (GCS).
 Тобто саме створення K8S кластера та bootstrap FluxCD ми не розглядаемо.
@@ -26,6 +32,19 @@ Slack-bot повинен отримувати та виконувати три �
 Таким чином ми не створюемо інфраструктуру а тільки робим процедуру deploy уже створенного
 та запакованного у HELM chart  застосунка.
 
-
+## Diagram
 
 ![Image](Slack-Bot-v1.png)
+
+## Components
+
+- **GCP**: As cloud provider
+- **GIT**: As version control system.
+- **Terraform**: As IaC provisioning tool
+- **GKE**: As Kubernetes service.
+- **K8S**: As container orchestration system.
+- **FluxCD**: To delivery solutions for Kubernetes.
+- **SlackBOT**: As entry point to interact with user.
+
+## Conclusion
+The Slack bot for Preview Environment is designed to provide a efficient and real-time solution to automate infrastructure tasks.

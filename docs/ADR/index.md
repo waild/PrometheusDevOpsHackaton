@@ -1,6 +1,7 @@
 # Architecture decision record (ADR)
-How to:  [ADR](https://github.com/joelparkerhenderson/architecture-decision-record "ADR")
-[template](./template.md)
+How to:
+[ADR](https://github.com/joelparkerhenderson/architecture-decision-record "ADR")
+ [template](./template.md)
 
 ------------
 
