@@ -40,11 +40,12 @@ Slack-bot повинен отримувати та виконувати три �
 
 - **GCP**: As cloud provider
 - **GIT**: As version control system.
+- **GIT Actions**: To implement testing and CI.
 - **Terraform**: As IaC provisioning tool
 - **GKE**: As Kubernetes service.
 - **K8S**: As container orchestration system.
 - **FluxCD**: To delivery solutions for Kubernetes.
-- **SlackBOT**: As entry point to interact with user.
+- **SlackBOT**: As entry point to interact with users.
 
 ## Conclusion
 The Slack bot for Preview Environment is designed to provide a efficient and real-time solution to automate infrastructure tasks.
