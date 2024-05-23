@@ -1,0 +1,9 @@
+apiVersion: v2
+name       : test-app
+description: Test app Helm chart
+type       : application
+version    : 0.1.0   # This is the Helm Chart version
+appVersion : "0.1.0" # This is the version of the application being deployed
+
+    
+    
