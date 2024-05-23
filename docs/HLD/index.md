@@ -42,12 +42,10 @@ Slack-bot повинен отримувати та виконувати три �
  
 ## Technologies Used
 
+- **Go**: Language for integration slack bot
 - **Slack**: Team communication platform
-- **GCP**: As cloud provider
 - **GIT**: As version control system.
 - **GIT Actions**: For testing and CI.
-- **Terraform**: As IaC provisioning tool
-- **GKE**: As Kubernetes service.
 - **K8S**: As container orchestration system.
 - **Helm charts**: To deploy an application to a Kubernetes cluster.
 - **FluxCD**: To delivery solutions for Kubernetes.
