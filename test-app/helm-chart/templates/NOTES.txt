@@ -1,0 +1,5 @@
+In order to access App you have the following options:
+
+1. kubectl port-forward service/wordpress-service-{{ .Values.namespace }} -n {{ .Values.namespace }} 8080:8080
+
+    and then open the browser on http://localhost:8080
