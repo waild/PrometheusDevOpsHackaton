@@ -1,2 +1,5 @@
-namespace: default
+namespace: app-test
 replicaCount: 2
+service:
+  type: NodePort
+  nodePort: ""

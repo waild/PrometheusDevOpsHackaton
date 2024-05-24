@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: wordpress-pv
+  name: wordpress-pv-{{ .Values.namespace }}
   namespace: {{ .Values.namespace }}
 spec:
   capacity:
@@ -9,15 +9,15 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: manual
+  storageClassName: wordpress-{{ .Values.namespace }}
   hostPath:
-    path: /mnt/project/wp-data 
+    path: /mnt/project/wp-data-{{ .Values.namespace }}
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: wordpress-pvc
+  name: wordpress-pvc-{{ .Values.namespace }}
   namespace: {{ .Values.namespace }}
 spec:
   accessModes:
@@ -25,7 +25,7 @@ spec:
   resources:
     requests:
       storage: 2Gi
-  storageClassName: manual
+  storageClassName: wordpress-{{ .Values.namespace }}
 
 ---
 apiVersion: apps/v1
@@ -34,7 +34,7 @@ metadata:
   name: wordpress
   namespace: {{ .Values.namespace }}
 spec:
-  replicas: {{ .Values.replicas}}
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: wordpress
@@ -54,7 +54,7 @@ spec:
               mountPath: /var/www/html
           env:
             - name: WORDPRESS_DB_HOST
-              value: mysql-service.default.svc.cluster.local
+              value: mysql-service.{{ .Values.namespace }}.svc.cluster.local
             - name: WORDPRESS_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -67,13 +67,13 @@ spec:
       volumes:
         - name: wordpress-data
           persistentVolumeClaim:
-            claimName: wordpress-pvc
+            claimName: wordpress-pvc-{{ .Values.namespace }}
 
 ---              
 kind: Service
 apiVersion: v1
 metadata:
-  name: wordpress-service
+  name: wordpress-service-{{ .Values.namespace }}
   namespace: {{ .Values.namespace }}
 spec:
   type: NodePort
@@ -82,6 +82,6 @@ spec:
   ports:
     - name: http
       protocol: TCP
-      port: 80
+      port: 8080
       targetPort: 80
-      nodePort: 30007
+      nodePort: {{ .Values.service.nodePort | default (randInt 30000 32767) }}
