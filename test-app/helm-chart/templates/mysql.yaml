@@ -1,37 +1,28 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: {{ .Values.namespace }}
-
----
-apiVersion: v1
 data:
   MYSQL_ROOT_PASSWORD: bXlwYXNzd29yZA==
 kind: Secret
 metadata:
-  namespace: {{ .Values.namespace }}
   name: mysql-secret
----
 
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: mysql-pv-{{ .Values.namespace }}
-  namespace: {{ .Values.namespace }}
+  name: mysql-pv-{{ .Release.Name }}
 spec:
   capacity:
     storage: 3Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /mnt/data/mysql-{{ .Values.namespace }}
+    path: /mnt/data/mysql-{{ .Release.Name }}
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mysql-pvc-{{ .Values.namespace }}
-  namespace: {{ .Values.namespace }}
+  name: mysql-pvc
 spec:
   accessModes:
     - ReadWriteOnce
@@ -40,14 +31,13 @@ spec:
       storage: 3Gi
   selector:
     matchLabels:
-      app: mysql-{{ .Values.namespace }}
+      app: mysql
 
 ---        
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mysql
-  namespace: {{ .Values.namespace }}
   labels:
     app: mysql
 spec:
@@ -78,14 +68,13 @@ spec:
       volumes:
           - name: mysql-data
             persistentVolumeClaim:
-              claimName: mysql-pvc-{{ .Values.namespace }}
+              claimName: mysql-pvc
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql-service
-  namespace: {{ .Values.namespace }}
+  name: mysql-service-{{ .Release.Name }}
 spec:
   ports:
   - port: 3306

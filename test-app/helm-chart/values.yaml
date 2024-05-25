@@ -1,4 +1,4 @@
-namespace: app-test
+envname: app-test
 replicaCount: 2
 service:
   type: NodePort
