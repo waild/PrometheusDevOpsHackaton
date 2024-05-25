@@ -1,0 +1,26 @@
+name: SLACKBOT-CICD
+on:
+  push:
+    branches:
+        - dev
+        - main
+        - master
+jobs:
+  ci:
+    name: CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      
+      - name: Build&Push
+        uses: docker/build-push-action@v2
+        with:
+          context: ./user-service
+          push: true
+          tags: ghcr.io/waild/tofts-slack-bot:latest
