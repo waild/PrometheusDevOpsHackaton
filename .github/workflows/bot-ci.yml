@@ -5,8 +5,8 @@ on:
         - dev
         - main
         - master
-    paths:
-      - integrationBot/**
+#    paths:
+#      - integrationBot/**
 jobs:
   ci:
     name: CI
