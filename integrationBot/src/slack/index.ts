@@ -113,7 +113,7 @@ export default class SlackBot {
       // await say(JSON.stringify(namespaces));
       await respond({
         text: 'Here are the available namespaces:',
-        blocks: [
+        /*blocks: [
           {
             type: 'section',
             text: {
@@ -121,9 +121,9 @@ export default class SlackBot {
               text: `You invoked the /get command`,
             },
           },
-        ],
+        ],*/
         // https://app.slack.com/block-kit-builder
-        /*blocks: namespaces.body.items.map<KnownBlock>((x): KnownBlock => {
+        blocks: namespaces.body.items.map<KnownBlock>((x): KnownBlock => {
           return {
             type: 'section',
             text: {
@@ -131,7 +131,7 @@ export default class SlackBot {
               text: `/${x.metadata}`,
             },
           };
-        }),*/
+        }),
       });
     } catch (err) {
       console.error(err);
