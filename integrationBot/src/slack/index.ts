@@ -128,7 +128,7 @@ export default class SlackBot {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `/${x.metadata}`,
+              text: `/${x.metadata?.name}: ${x.metadata?.annotations}`,
             },
           };
         }),
