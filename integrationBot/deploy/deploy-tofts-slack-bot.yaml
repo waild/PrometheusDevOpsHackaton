@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: tofts-slack-bot
+  name: tofts-slack-bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tofts-slack-bot
+  template:
+    metadata:
+      labels:
+        app: tofts-slack-bot
+    spec:
+      containers:
+      - image: ghcr.io/waild/tofts-slack-bot:latest
+        name: tofts-slack-bot
+        env:
+          - name: PORT
+            value: "3000"
+          - name: COMMAND_PREFIX
+            value: "tofts-"
+          - name: EnvSecret
+        envFrom:
+          - secretRef:
+              name: slack-bot-secret
+        ports:
+          - containerPort: 3000   
