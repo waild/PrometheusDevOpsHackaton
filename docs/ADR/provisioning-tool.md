@@ -14,4 +14,5 @@ We decided not to use any provisioning tool which bring vender lock, so we can u
 
 ## Consequences
 
+Choosing not to use any provisioning tool can reduce complexity, provide direct control, save costs, increase flexibility, and simplify debugging and visibility into the infrastructure setup.
 We will be able to use any kubernetes cluster.

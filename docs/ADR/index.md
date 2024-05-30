@@ -12,7 +12,7 @@ How to:
 | Cloud provider  | [cloud-provider](./cloud-provider.md)  |
 | Provisioning tool  | [provisioning-tool](./provisioning-tool.md) |
 | Bot language  | [bot-language](./bot-language.md)  |
-| Git ops aproach  | [git-ops-aproach](./git-ops-aproach.md)  |
+| Git ops aproach  | [git-ops-aproach](./git-ops-approach.md)  |
 | State storage  | [state-storage](./state-storage.md) |
 | Container orchestration system  | [container-orchestration-system](./container-orchestration-system.md)  |
 | K8S management tool  | [k8s-application-managment](./k8s-application-managment.md) |

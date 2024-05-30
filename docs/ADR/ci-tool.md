@@ -14,4 +14,4 @@ Github Actions
 
 ## Consequences
 
-Github Actions cover all needs
+Github Actions cover all needs, it offers substantial benefits in terms of automation, efficiency, and collaboration, 
