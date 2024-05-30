@@ -55,9 +55,9 @@ FROM node:18-alpine As production
 
 # install fluxCD to container
 RUN apk --no-cache add curl
-RUN apt-get install -y sudo
+RUN apk --no-cache add su-exec
 
-RUN curl -s https://fluxcd.io/install.sh | sudo bash
+RUN curl -s https://fluxcd.io/install.sh | su-exec bash
 
 # Copy the bundled code from the build stage to the production image
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules

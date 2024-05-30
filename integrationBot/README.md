@@ -52,8 +52,10 @@ echo "GITHUB_TOKEN=[...]" >> slack-bot-secret.env\
 
 Create secret in k8s\
 `kubectl create secret generic slack-bot-secret --from-env-file=slack-bot-secret.env`
+###### 7. Bind roles to access to cluster from node
+`kubectl create clusterrolebinding default-admin --clusterrole cluster-admin --serviceaccount=default:default`
 
-###### 7. Deploy slack-bot
+###### 8. Deploy slack-bot
 `kubectl apply -f ./deploy/deploy-tofts-slack-bot.yaml`
 
-###### 8. Enjoy
+###### 9. Enjoy
