@@ -5,33 +5,27 @@
 This document outlines the high-level design of the Slack bot for automatization infrastructure tasks.
 
 ## System Flow
+In the existing cluster, FluxCD and IntegrationApp is deployed and configured.
+That is, the creation of the bootstrap K8S cluster are not considered.
 
-Пропонується наступна схема реализаціі.
-У існуючому кластері розгортається FluxCD налаштований на конкретний Google storage (GCS).
-Тобто саме створення K8S кластера та bootstrap FluxCD ми не розглядаемо.
+Next, using FluxCD, and Slack-bot is deployed in a separate namespaces.
+The Slack-bot should receive and execute three commands:
 
-Далі за допомогою FluxCD розгортаємо Slack-bot у окремому namespace (flux-slack)?.
-Slack-bot повинен отримувати та виконувати три команди:
+- Deploy the application of a specified version in a specific environment:
+`/create [env] [ver]`
+- Provide a list of running applications and their versions:
+`/get`
+- Delete an application:
+`/delete [env]`
 
+The create and delete commands work with Git as the source of information for FluxCD
+(they create the necessary directory with files and change the configuration for Flux).
 
-   - зробити деплой застосунка указанної версії у конкретному енвайроменті
-   `create [env] [ver]`
-   - видати лист працюючих застосунків і їх версій
-   `get`
-   - видалити застосунок
-   `delete [env]`
+The get command operates with ClusterApi.
 
-Команди create да delete працюють із Git-ом як джерелом інформації для FluxCD
-(Створюють потрібний каталог із файлами та змінюють конфігурацію для Flux).
+All other commands will return a help string.
 
-Команда get оперуе із ClusterApi. 
-
-
-Всі інши команді видать строку help.
-
-Таким чином ми не створюемо інфраструктуру а тільки робим процедуру deploy уже створенного
-та запакованного у HELM chart  застосунка.
-
+Thus, we do not create infrastructure but only perform the deploy procedure of an already created and packed application in a HELM chart.
 ## Diagram
 
 ![Image](Slack-Bot-v1.png)
@@ -42,7 +36,7 @@ Slack-bot повинен отримувати та виконувати три �
  
 ## Technologies Used
 
-- **Go**: Language for integration slack bot
+- **Node.JS**: Language for integration slack bot
 - **Slack**: Team communication platform
 - **GIT**: As version control system.
 - **GIT Actions**: For testing and CI.
@@ -51,4 +45,4 @@ Slack-bot повинен отримувати та виконувати три �
 - **FluxCD**: To delivery solutions for Kubernetes.
 
 ## Conclusion
-The Slack bot for Preview Environment is designed to provide an efficient and real-time solution to automate infrastructure tasks.
+Utilizing a IntegrationApp for FluxCD management offers enhanced accessibility, simplified interaction, streamlined workflows, improved collaboration, automation, and integration flexibility. By leveraging the power of IntegrationApp, organizations can optimize their Kubernetes deployment processes, enhance team productivity, and accelerate time-to-market for applications.

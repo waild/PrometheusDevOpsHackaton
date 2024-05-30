@@ -14,4 +14,4 @@ K8S
 
 ## Consequences
 
-We can run our system on any environments
+Using Kubernetes provides significant benefits in scalability, portability, high availability, flexibility, efficient DevOps practices, and access to a robust community and ecosystem.

@@ -14,4 +14,4 @@ We decided not to stick to any cloud provider to avoid vendor lock.
 
 ## Consequences
 
-We will be able to use any kubernetes cluster.
+By not sticking to a single cloud provider, organizations can achieve greater flexibility, cost management, resilience, performance optimization, negotiation power, and innovation.
