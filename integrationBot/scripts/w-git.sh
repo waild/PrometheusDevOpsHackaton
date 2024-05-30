@@ -17,7 +17,7 @@ git clone "https://$GITHUB_TOKEN@github.com/$REPO_URL" "$TARGET_DIR"
 cd "$TARGET_DIR" || { echo "Failed to change to directory $TARGET_DIR"; exit 1; }
 
 # TEST…
-mkdir "$NEW_DIR"
+mkdir -p "$NEW_DIR"
 
 # Add the new directory to Git
 git add "$NEW_DIR"
