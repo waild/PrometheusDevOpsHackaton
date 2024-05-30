@@ -1,7 +1,7 @@
 #!/bin/bash
 
 REPO_URL="waild/PrometheusDevOpsHackaton"
-CLONE_DIR="repo"
+TARGET_DIR="repo"
 NEW_DIR="new_folder"   
 
 # Load .env file
@@ -12,9 +12,9 @@ else
   exit 1
 fi
 
-git clone "https://$GITHUB_TOKEN@github.com/$REPO_URL" "$CLONE_DIR"
+git clone "https://$GITHUB_TOKEN@github.com/$REPO_URL" "$TARGET_DIR"
 
-cd "$CLONE_DIR" || { echo "Failed to change to directory $CLONE_DIR"; exit 1; }
+cd "$TARGET_DIR" || { echo "Failed to change to directory $TARGET_DIR"; exit 1; }
 
 # TEST…
 mkdir "$NEW_DIR"
@@ -30,6 +30,6 @@ git push origin main
 
 # Remove the local copy of the repository (optional)
 cd ..
-rm -rf "$CLONE_DIR"
+rm -rf "$TARGET_DIR"
 
 echo "Script executed successfully!"
