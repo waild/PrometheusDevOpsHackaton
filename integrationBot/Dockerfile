@@ -54,6 +54,9 @@ USER node
 FROM node:18-alpine As production
 
 # install fluxCD to container
+RUN apk --no-cache add curl
+RUN apt-get install -y sudo
+
 RUN curl -s https://fluxcd.io/install.sh | sudo bash
 
 # Copy the bundled code from the build stage to the production image
