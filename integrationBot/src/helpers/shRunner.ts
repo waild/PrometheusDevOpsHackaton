@@ -15,9 +15,9 @@ const exec = (cmd: string, args: string[] = []) =>
     app.on('error', reject);
   });
 
-const run = async (scriptName: string) => {
+const run = async (scriptName: string, args: string[]) => {
   const scriptPath = path.join(__dirname, `./${scriptName}.sh`);
-  await exec('bash', [scriptPath]);
+  await exec('bash', [scriptPath, ...args]);
 };
 
 export { run };

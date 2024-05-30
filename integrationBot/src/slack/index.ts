@@ -5,6 +5,7 @@ import {
   KnownBlock,
 } from '@slack/bolt';
 import KubeClientFactory from '../k8s';
+import { run } from '../helpers/shRunner';
 import k8s from '@kubernetes/client-node';
 
 export default class SlackBot {
@@ -64,6 +65,7 @@ export default class SlackBot {
   }: SlackCommandMiddlewareArgs & AllMiddlewareArgs<any>) {
     const text = command.text.trim();
     const [environment] = text.split(' ');
+    await run('delete-helm', [environment]);
     await respond({
       text: 'Here are the available commands:',
       // https://app.slack.com/block-kit-builder
@@ -86,6 +88,7 @@ export default class SlackBot {
   }: SlackCommandMiddlewareArgs & AllMiddlewareArgs<any>) {
     const text = command.text.trim();
     const [environment, source] = text.split(' ');
+    await run('create-helm', [environment, source]);
     await respond({
       text: 'Here are the available commands:',
       // https://app.slack.com/block-kit-builder
@@ -107,47 +110,19 @@ export default class SlackBot {
     say,
     respond,
   }: SlackCommandMiddlewareArgs & AllMiddlewareArgs<any>) {
-    try {
-      const namespaces = await this.k8sApi.listNamespace();
-      console.dir(namespaces);
-      // await say(JSON.stringify(namespaces));
-      await respond({
-        text: 'Here are the available namespaces:',
-        /*blocks: [
-          {
-            type: 'section',
-            text: {
-              type: 'mrkdwn',
-              text: `You invoked the /get command`,
-            },
+    const namespaces = await this.k8sApi.listNamespace();
+    await respond({
+      text: 'Here are the available namespaces:',
+      blocks: namespaces.body.items.map<KnownBlock>((x): KnownBlock => {
+        return {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: `/${x.metadata?.name}: ${x.metadata?.annotations}`,
           },
-        ],*/
-        // https://app.slack.com/block-kit-builder
-        blocks: namespaces.body.items.map<KnownBlock>((x): KnownBlock => {
-          return {
-            type: 'section',
-            text: {
-              type: 'mrkdwn',
-              text: `/${x.metadata?.name}: ${x.metadata?.annotations}`,
-            },
-          };
-        }),
-      });
-    } catch (err) {
-      console.error(err);
-      await respond({
-        text: 'Here are the available namespaces:',
-        blocks: [
-          {
-            type: 'section',
-            text: {
-              type: 'mrkdwn',
-              text: `You invoked the /get command, but we have some error with cluster: ${(<Error>err).message}`,
-            },
-          },
-        ],
-      });
-    }
+        };
+      }),
+    });
   }
 
   async listen(port: number) {
@@ -155,19 +130,38 @@ export default class SlackBot {
     this.app.command(commandName, async (slackCommandMiddlewareArgs) => {
       const { command, ack, say, respond } = slackCommandMiddlewareArgs;
       await ack();
-      console.dir(command);
-      switch (command.command) {
-        case `/${this.commandPrefix}help`:
-          await this.helpHandler(slackCommandMiddlewareArgs);
-          break;
-        case `/${this.commandPrefix}delete`:
-          await this.deleteHandler(slackCommandMiddlewareArgs);
-          break;
-        case `/${this.commandPrefix}get`:
-          await this.getHandler(slackCommandMiddlewareArgs);
-          break;
-        default:
-          say(`Unknown command: ${command.command}, plz check.`);
+
+      try {
+        switch (command.command) {
+          case `/${this.commandPrefix}help`:
+            await this.helpHandler(slackCommandMiddlewareArgs);
+            break;
+          case `/${this.commandPrefix}delete`:
+            await this.deleteHandler(slackCommandMiddlewareArgs);
+            break;
+          case `/${this.commandPrefix}create`:
+            await this.createHandler(slackCommandMiddlewareArgs);
+            break;
+          case `/${this.commandPrefix}get`:
+            await this.getHandler(slackCommandMiddlewareArgs);
+            break;
+          default:
+            await this.helpHandler(slackCommandMiddlewareArgs);
+        }
+      } catch (err) {
+        console.error(err);
+        await respond({
+          text: 'Something went wrong:',
+          blocks: [
+            {
+              type: 'section',
+              text: {
+                type: 'mrkdwn',
+                text: `Something went wrong please try again later: ${(<Error>err).message}`,
+              },
+            },
+          ],
+        });
       }
     });
 
