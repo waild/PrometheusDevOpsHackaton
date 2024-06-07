@@ -7,7 +7,7 @@ git clone "https://$GITHUB_TOKEN@github.com/$GITHUB_USER/$GITHUB_REPO" "$TEMP_DI
 
 cd "$TEMP_DIR" || { echo "Failed to change to directory $TEMP_DIR"; exit 1; }
 
-git rm "$GITHUB_REPO_CONFIG_PATH/$ENVIRONMENT_NAME.yaml"
+git rm "$GITHUB_REPO_CONFIG_PATH/$ENVIRONMENT_NAME-*.yaml"
 # Commit the changes
 git commit -m "Removed new environment $ENVIRONMENT_NAME"
 
