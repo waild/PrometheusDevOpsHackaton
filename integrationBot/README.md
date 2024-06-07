@@ -33,7 +33,12 @@ Add Slash Commands:
   --path=$GITHUB_REPO_CONFIG_PATH \
   --personal
 `
-###### 6. Prepare secrets for slack bot
+
+###### 6.
+`export OCI_SOURCE=<your-helm-oci-repository>`
+e.g. 'export OCI_SOURCE=oci://ghcr.io/gabe565/charts/flame'
+
+###### 7. Prepare secrets for slack bot
 Make env file with secret's\
 "slack-bot-secret.env"
 
@@ -47,15 +52,16 @@ echo "GITHUB_USER=[...]" >> slack-bot-secret.env\
 echo "GITHUB_REPO=[...]" >> slack-bot-secret.env\
 echo "GITHUB_REPO_CONFIG_PATH=[...]" >> slack-bot-secret.env\
 echo "GITHUB_TOKEN=[...]" >> slack-bot-secret.env\
+echo "COMMAND_PREFIX=[...]" >> slack-bot-secret.env\
+echo "OCI_SOURCE=[...]" >> slack-bot-secret.env\
 `
-
 
 Create secret in k8s\
 `kubectl create secret generic slack-bot-secret --from-env-file=slack-bot-secret.env`
-###### 7. Bind roles to access to cluster from node
+###### 8. Bind roles to access to cluster from node
 `kubectl create clusterrolebinding default-admin --clusterrole cluster-admin --serviceaccount=default:default`
 
-###### 8. Deploy slack-bot
+###### 9. Deploy slack-bot
 `kubectl apply -f ./deploy/deploy-tofts-slack-bot.yaml`
 
-###### 9. Enjoy
+###### 10. Enjoy

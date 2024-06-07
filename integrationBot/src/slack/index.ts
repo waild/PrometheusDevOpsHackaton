@@ -74,7 +74,7 @@ export default class SlackBot {
     args: argParser.ParsedArgs,
   ) {
     const [environment] = args._;
-    await run('delete-helm', [environment]);
+    await run('delete-env', [environment]);
     await respond({
       text: 'Here are the available commands:',
       // https://app.slack.com/block-kit-builder
@@ -99,7 +99,7 @@ export default class SlackBot {
     args: argParser.ParsedArgs,
   ) {
     const [environment, source] = args._;
-    await run('add-helm-release', [environment, source]);
+    await run('add-helm-oci', [environment, source]);
     await respond({
       text: 'Here are the available commands:',
       // https://app.slack.com/block-kit-builder
