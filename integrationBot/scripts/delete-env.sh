@@ -2,6 +2,18 @@
 ENVIRONMENT_NAME=$1
 TEMP_DIR="temp"
 
+for ARGUMENT in "$@"
+do
+   KEY=$(echo $ARGUMENT | cut -f1 -d=)
+
+   KEY_LENGTH=${#KEY}
+   VALUE="${ARGUMENT:$KEY_LENGTH+1}"
+
+   export "$KEY"="$VALUE"
+done
+
+#printenv 
+
 rm -rf "$TEMP_DIR"
 git clone "https://$GITHUB_TOKEN@github.com/$GITHUB_USER/$GITHUB_REPO" "$TEMP_DIR"
 

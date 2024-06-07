@@ -108,7 +108,7 @@ export default class SlackBot {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `You invoked the /create command, environment: ${environment} created from ${source}}`,
+            text: `You invoked the /create command, environment: ${environment} created from ${source}`,
           },
         },
       ],

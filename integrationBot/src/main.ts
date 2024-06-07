@@ -1,6 +1,7 @@
 import SlackBotApp from './slack';
 import * as dotenv from 'dotenv';
 import { getEnv } from './helpers/envHelpers';
+import requiredEnvVars from './const/requiredEnvVars';
 dotenv.config();
 
 async function bootstrap() {
@@ -9,9 +10,7 @@ async function bootstrap() {
   console.log('⚡️ Bolt app is running!');
 }
 function checkEnvVariables() {
-  getEnv('SLACK_BOT_SOCKET_TOKEN');
-  getEnv('SLACK_SIGNING_SECRET');
-  getEnv('SLACK_BOT_TOKEN');
+  requiredEnvVars.forEach((x) => getEnv(x));
 }
 checkEnvVariables();
 bootstrap();
