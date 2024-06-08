@@ -59,6 +59,9 @@ RUN apk --no-cache add su-exec
 RUN apk --no-cache add bash
 RUN apk --no-cache add git
 
+RUN git config --global user.name tofts_integration_bot
+RUN git config --global user.email tofts_integration_bot@gmail.com
+
 RUN curl -s https://fluxcd.io/install.sh | su-exec bash
 
 # Copy the bundled code from the build stage to the production image
