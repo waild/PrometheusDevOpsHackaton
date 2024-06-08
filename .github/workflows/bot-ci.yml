@@ -25,4 +25,4 @@ jobs:
         with:
           context: ./integrationBot/
           push: true
-          tags: ghcr.io/waild/tofts-slack-bot:${{ github.sha }}
+          tags: ghcr.io/waild/tofts-slack-bot:latest
