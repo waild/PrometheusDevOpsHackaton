@@ -56,7 +56,8 @@ FROM node:18-alpine As production
 # install fluxCD to container
 RUN apk --no-cache add curl
 RUN apk --no-cache add su-exec
-RUN apk --no-cache add bash 
+RUN apk --no-cache add bash
+RUN apk --no-cache add git
 
 RUN curl -s https://fluxcd.io/install.sh | su-exec bash
 
