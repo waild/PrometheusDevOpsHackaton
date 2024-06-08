@@ -56,6 +56,7 @@ FROM node:18-alpine As production
 # install fluxCD to container
 RUN apk --no-cache add curl
 RUN apk --no-cache add su-exec
+RUN apk --no-cache add bash 
 
 RUN curl -s https://fluxcd.io/install.sh | su-exec bash
 
@@ -63,6 +64,7 @@ RUN curl -s https://fluxcd.io/install.sh | su-exec bash
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
 COPY --chown=node:node --from=build /usr/src/app/scripts ./dist/scripts
+COPY --chown=node:node --from=build /usr/src/app/scripts ./scripts
 
 # Start the server using the production build
 CMD [ "node", "dist/main.js" ]
