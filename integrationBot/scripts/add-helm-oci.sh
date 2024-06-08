@@ -1,8 +1,4 @@
 #!/bin/bash
-ENVIRONMENT_NAME=$1
-TAG="${2:-'latest'}"
-TEMP_DIR="temp"
-
 for ARGUMENT in "$@"
 do
    KEY=$(echo $ARGUMENT | cut -f1 -d=)
@@ -10,8 +6,15 @@ do
    KEY_LENGTH=${#KEY}
    VALUE="${ARGUMENT:$KEY_LENGTH+1}"
 
-   export "$KEY"="$VALUE"
+  if [ -n "${VAR}" ]; then
+      export "$KEY"="${VALUE:''}"
+  fi
+   
 done
+
+ENVIRONMENT_NAME=$1
+TAG="${2:-'latest'}"
+TEMP_DIR="temp"
 
 rm -rf "$TEMP_DIR"
 git clone "https://$GITHUB_TOKEN@github.com/$GITHUB_USER/$GITHUB_REPO" "$TEMP_DIR"

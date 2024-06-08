@@ -1,6 +1,4 @@
 #!/bin/bash
-ENVIRONMENT_NAME=$1
-TEMP_DIR="temp"
 
 for ARGUMENT in "$@"
 do
@@ -9,8 +7,14 @@ do
    KEY_LENGTH=${#KEY}
    VALUE="${ARGUMENT:$KEY_LENGTH+1}"
 
-   export "$KEY"="$VALUE"
+  if [ -n "${VAR}" ]; then
+      export "$KEY"="${VALUE:''}"
+  fi
+   
 done
+
+ENVIRONMENT_NAME=$1
+TEMP_DIR="temp"
 
 #printenv 
 
