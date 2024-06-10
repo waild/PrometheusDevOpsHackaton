@@ -214,19 +214,6 @@ export default class SlackBot {
               ],
             };
           }),
-          ...nss.map<KnownBlock>((x, index): KnownBlock => {
-            return {
-              type: 'section',
-              text: {
-                type: 'mrkdwn',
-                text: `environment *${x}*: ${resolvedPodInfos[
-                  index
-                ].body.items.map((y) => {
-                  return `${y.metadata?.name} - ${y.spec?.containers[0].image}`;
-                })}`,
-              },
-            };
-          }),
         ],
       });
     } else {
