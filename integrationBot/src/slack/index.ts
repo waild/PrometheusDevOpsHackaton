@@ -218,13 +218,13 @@ export default class SlackBot {
       });
     } else {
       await respond({
-        text: 'Here are the available namespaces:',
         blocks: [
           {
-            type: 'section',
+            type: 'header',
             text: {
-              type: 'mrkdwn',
+              type: 'plain_text',
               text: `There no any environments;`,
+              emoji: true,
             },
           },
         ],
