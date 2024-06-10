@@ -3,6 +3,8 @@ import {
   SlackCommandMiddlewareArgs,
   AllMiddlewareArgs,
   KnownBlock,
+  RichTextElement,
+  RichTextSection,
 } from '@slack/bolt';
 import KubeClientFactory from '../k8s';
 import { run } from '../helpers/shRunner';
@@ -36,29 +38,42 @@ export default class SlackBot {
     say,
     respond,
   }: SlackCommandMiddlewareArgs & AllMiddlewareArgs<any>) {
+    // https://app.slack.com/block-kit-builder
     await respond({
-      text: 'Here are the available commands:',
-      // https://app.slack.com/block-kit-builder
       blocks: [
         {
-          type: 'section',
+          type: 'header',
           text: {
-            type: 'mrkdwn',
-            text: `/${this.commandPrefix}get`,
+            type: 'plain_text',
+            text: 'List of command which you can invoke to control your envs:',
+            emoji: true,
           },
         },
         {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `/${this.commandPrefix}create *[environment-name]* *[source]*`,
+            text: '/get',
           },
+        },
+        {
+          type: 'divider',
         },
         {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `/${this.commandPrefix}delete *[environment-name]*`,
+            text: '/create *[environment-name]* *[source]*',
+          },
+        },
+        {
+          type: 'divider',
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: '/delete *[environment-name]*',
           },
         },
       ],
@@ -76,14 +91,21 @@ export default class SlackBot {
     const [environment] = args._;
     await run('delete-env', [environment]);
     await respond({
-      text: 'Here are the available commands:',
       // https://app.slack.com/block-kit-builder
       blocks: [
+        {
+          type: 'header',
+          text: {
+            type: 'plain_text',
+            text: 'Environment deletion initiated!',
+            emoji: true,
+          },
+        },
         {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `You invoked the /delete command, environment: ${environment} deleted`,
+            text: `The environment: *${environment}* will be deleted shortly. Please check status in few minutes.`,
           },
         },
       ],
@@ -101,14 +123,21 @@ export default class SlackBot {
     const [environment, source] = args._;
     await run('add-helm-oci', [environment, source]);
     await respond({
-      text: 'Here are the available commands:',
       // https://app.slack.com/block-kit-builder
       blocks: [
+        {
+          type: 'header',
+          text: {
+            type: 'plain_text',
+            text: 'Environment creation initiated!',
+            emoji: true,
+          },
+        },
         {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `You invoked the /create command, environment: ${environment} created from ${source}`,
+            text: `The environment: *${environment}* will be created shortly. Please check status in few minutes.`,
           },
         },
       ],
@@ -132,22 +161,73 @@ export default class SlackBot {
         nss.map((ns) => this.k8sApi.listNamespacedPod(ns)),
       );
 
-      //await this.k8sApi.listNamespacedService;
       await respond({
-        text: 'Here are the available namespaces:',
-        blocks: nss.map<KnownBlock>((x, index): KnownBlock => {
-          return {
-            type: 'section',
+        blocks: [
+          {
+            type: 'header',
             text: {
-              type: 'mrkdwn',
-              text: `environment ${x}: ${resolvedPodInfos[index].body.items.map(
-                (y) => {
-                  return `${y.metadata?.name} - ${y.spec?.containers[0].image}`;
-                },
-              )}`,
+              type: 'plain_text',
+              text: 'List of existing environments:',
+              emoji: true,
             },
-          };
-        }),
+          },
+          ...nss.map<KnownBlock>((x, index): KnownBlock => {
+            return {
+              type: 'rich_text',
+              elements: [
+                {
+                  type: 'rich_text_section',
+                  elements: [
+                    {
+                      type: 'text',
+                      text: `environment: ${x}\n`,
+                    },
+                  ],
+                },
+                {
+                  type: 'rich_text_list',
+                  style: 'bullet',
+                  elements: [
+                    ...resolvedPodInfos[index].body.items.map(
+                      (y): RichTextSection => {
+                        return {
+                          type: 'rich_text_section',
+                          elements: [
+                            {
+                              type: 'link',
+                              url: 'https://slack.com/',
+                              text: `${y.metadata?.name} : `,
+                              style: {
+                                bold: true,
+                              },
+                            },
+                            {
+                              type: 'text',
+                              text: `${y.spec?.containers[0].image}`,
+                            },
+                          ],
+                        };
+                      },
+                    ),
+                  ],
+                },
+              ],
+            };
+          }),
+          ...nss.map<KnownBlock>((x, index): KnownBlock => {
+            return {
+              type: 'section',
+              text: {
+                type: 'mrkdwn',
+                text: `environment *${x}*: ${resolvedPodInfos[
+                  index
+                ].body.items.map((y) => {
+                  return `${y.metadata?.name} - ${y.spec?.containers[0].image}`;
+                })}`,
+              },
+            };
+          }),
+        ],
       });
     } else {
       await respond({
